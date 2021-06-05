@@ -35,16 +35,13 @@
                 </tr>
             </tbody>
         </table>
-        <pagination :paginate="data"></pagination>
     </div>
 </div>
 
 </template>
 
 <script>
-import Pagination from '../Pagination/Pagination.vue';
 export default {
-  components: { Pagination },
     props: {
         rows: Object,
         data: Object
