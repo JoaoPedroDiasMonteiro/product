@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-               <tr v-for="item in data" :key="item">
+               <tr v-for="item in data.data" :key="item">
                     <td v-for="row in rows" :key="row" class="px-5 py-5 text-sm bg-white border-b border-gray-200">
                         <p class="text-gray-900 whitespace-no-wrap">{{item[row]}}</p>
                     </td>
@@ -35,13 +35,16 @@
                 </tr>
             </tbody>
         </table>
+        <pagination :paginate="data"></pagination>
     </div>
 </div>
 
 </template>
 
 <script>
+import Pagination from '../Pagination/Pagination.vue';
 export default {
+  components: { Pagination },
     props: {
         rows: Object,
         data: Object
