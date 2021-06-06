@@ -13,24 +13,24 @@
                 </tr>
             </thead>
             <tbody>
-               <tr v-for="item in data.data" :key="item">
+               <tr v-for="item in data.data" :key="item.id">
                     <td v-for="row in rows" :key="row" class="px-5 py-5 text-sm bg-white border-b border-gray-200">
                         <p class="text-gray-900 whitespace-no-wrap">{{item[row]}}</p>
                     </td>
                     
                     <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                        <span
+                        <inertia-link :href="editResolve(item.id)"
                             class="relative inline-block px-3 py-1 font-semibold leading-tight text-yellow-900 cursor-pointer">
                             <span aria-hidden
                                 class="absolute inset-0 bg-yellow-200 rounded-full opacity-50"></span>
                             <span class="relative">Editar</span>
-                        </span>
-                        <span
+                        </inertia-link>
+                        <inertia-link :href="deleteResolve(item.id)"
                             class="relative inline-block px-3 py-1 ml-3 font-semibold leading-tight text-red-900 cursor-pointer">
                             <span aria-hidden
                                 class="absolute inset-0 bg-red-200 rounded-full opacity-50"></span>
                             <span class="relative">Deletar</span>
-                        </span>
+                        </inertia-link>
                     </td>
                 </tr>
             </tbody>
@@ -44,7 +44,22 @@
 export default {
     props: {
         rows: Object,
-        data: Object
+        data: Object,
+        routes: {
+            default: {
+                edit: 'test',
+                delete: 'test',
+            },
+            type: Object
+        }
+    },
+    methods: {
+        editResolve: function(id) {
+            return route(this.routes.edit, id);
+        },
+        deleteResolve: function(id) {
+            return route(this.routes.delete, id);
+        }
     }
 };
 </script>

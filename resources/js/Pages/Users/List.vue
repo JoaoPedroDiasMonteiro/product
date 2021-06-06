@@ -1,6 +1,6 @@
 <template>
   <table-menu :routes="routes"></table-menu>
-  <simple-with-actions :data="data" :rows="rows"></simple-with-actions>
+  <simple-with-actions :data="data" :rows="rows" :routes="routes2"></simple-with-actions>
   <pagination :paginate="data"></pagination>
 </template>
 
@@ -19,6 +19,10 @@ export default {
       routes: {
         create: "users.create",
         search: "users.index"
+      },
+      routes2: {
+        edit: "users.edit",
+        delete: "users.destroy"
       }
     };
   }

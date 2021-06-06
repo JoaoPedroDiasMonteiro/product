@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +78,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return Inertia::render('Users/Update', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -87,9 +90,19 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $user->fill($request->validated());
+            $user->saveOrFail();
+            DB::commit();
+            return redirect()->route('users.index', ['search' => $user->email]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('users.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
