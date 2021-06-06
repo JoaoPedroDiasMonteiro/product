@@ -25,12 +25,12 @@
                                 class="absolute inset-0 bg-yellow-200 rounded-full opacity-50"></span>
                             <span class="relative">Editar</span>
                         </inertia-link>
-                        <inertia-link :href="deleteResolve(item.id)"
+                        <button @click="deleteItem(item.id)"
                             class="relative inline-block px-3 py-1 ml-3 font-semibold leading-tight text-red-900 cursor-pointer">
                             <span aria-hidden
                                 class="absolute inset-0 bg-red-200 rounded-full opacity-50"></span>
                             <span class="relative">Deletar</span>
-                        </inertia-link>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -59,6 +59,12 @@ export default {
         },
         deleteResolve: function(id) {
             return route(this.routes.delete, id);
+        },
+        deleteItem: function (id) {
+           const confirm = window.confirm('Do you really want to delete?');
+           if (confirm) {
+                this.$inertia.delete(this.deleteResolve(id));               
+           }
         }
     }
 };

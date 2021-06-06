@@ -113,6 +113,15 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $user->delete();
+            DB::commit();
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('users.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 }
