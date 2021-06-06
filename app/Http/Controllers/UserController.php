@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -33,7 +35,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        dd(1);
+        return Inertia::render('Users/Create');
     }
 
     /**
@@ -42,9 +44,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $user = User::query()->create($request->validated());
+            DB::commit();
+            return redirect()->route('users.index', ['search' => $user->email]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('users.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
