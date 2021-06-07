@@ -1,84 +1,60 @@
 <template>
-  <!-- component -->
   <nav class="bg-white shadow" role="navigation">
     <div
       class="container flex flex-wrap items-center p-4 mx-auto md:flex-no-wrap"
     >
       <div class="mr-4 md:mr-8">
-        <a href="#" rel="home">
-          <svg
-            class="w-10 h-10 text-purple-600"
-            width="54"
-            height="54"
-            viewBox="0 0 54 54"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>TailwindCSS</title>
-            <path
-              fill="currentColor"
-              d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
-            ></path>
-          </svg>
-        </a>
-      </div>
-      <div class="ml-auto md:hidden">
-        <button
-          class="flex items-center px-3 py-2 border rounded"
-          type="button"
-        >
-          <svg
-            class="w-3 h-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
+        <slot name="iconOrText"></slot>
       </div>
       <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
         <ul
-          class="flex flex-col pt-4 mt-4 -mx-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0"
-        >
-          <li>
-            <a class="block px-4 py-1 md:p-2 lg:px-4" href="#" title="Link"
-              >Link</a
-            >
-          </li>
-          <li>
-            <a
-              class="block px-4 py-1 text-purple-600 md:p-2 lg:px-4"
-              href="#"
-              title="Active Link"
-              >Active Link</a
-            >
-          </li>
-          <li>
-            <a class="block px-4 py-1 md:p-2 lg:px-4" href="#" title="Link"
-              >Link</a
-            >
-          </li>
-        </ul>
-        <ul
           class="flex flex-col pt-4 mt-4 -mx-4 border-t md:flex-row md:items-center md:mx-0 md:ml-auto md:mt-0 md:pt-0 md:border-0"
         >
-          <li>
-            <a class="block px-4 py-1 md:p-2 lg:px-4" href="#" title="Link"
-              >Link</a
+          <li class="relative block">
+            <span
+              class="absolute inset-y-0 left-0 flex items-center h-full pl-2"
             >
+              <svg
+                viewBox="0 0 24 24"
+                class="w-4 h-4 text-gray-500 fill-current"
+              >
+                <path
+                  d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z"
+                ></path>
+              </svg>
+            </span>
+            <input
+              placeholder="Search"
+              v-model="search"
+              @click="handleSearch"
+              @keydown="handleSearch"
+              type="search"
+              class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-400 rounded-l rounded-r appearance-none sm:rounded-l-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+            />
           </li>
-          <li>
-            <a
-              class="block px-4 py-1 text-purple-600 md:p-2 lg:px-4"
-              href="#"
-              title="Active Link"
-              >Active Link</a
+
+          <li class="relative block">
+            <span
+              class="absolute inset-y-0 left-0 flex items-center h-full pl-2"
             >
-          </li>
-          <li>
-            <a class="block px-4 py-1 md:p-2 lg:px-4" href="#" title="Link"
-              >Link</a
+            </span>
+            <inertia-link
+              :href="resolvedCreate"
+              class="block px-6 py-2 ml-1 text-white bg-yellow-500 rounded-md shadow cursor-pointer hover:bg-yellow-400"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="inline w-5 h-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </inertia-link>
           </li>
         </ul>
       </div>
@@ -87,7 +63,44 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    routes: {
+      default: { search: "test", create: "test" },
+      type: Object
+    },
+    searchProp: {
+      default: '',
+      type: String
+    }
+  },
+  data() {
+    return {
+      search: this.searchProp,
+      timeout: null
+    };
+  },
+  computed: {
+    resolvedCreate: function() {
+      return route(this.routes.create);
+    },
+    resolvedSearch: function() {
+      return route(this.routes.search);
+    }
+  },
+  methods: {
+    handleSearch() {
+      window.clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.$inertia.get(
+          this.resolvedSearch,
+          { search: this.search },
+          { preserveState: true }
+        );
+      }, 264);
+    }
+  }
+};
 </script>
 
 <style></style>
