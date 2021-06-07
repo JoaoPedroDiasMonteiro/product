@@ -19,7 +19,7 @@
 
 
 <script>
-import FloatingError from '../Components/Messages/FloatingError.vue';
+import FloatingError from '../../Components/Messages/FloatingError.vue';
 export default {
   components: { FloatingError },
     props: {
