@@ -1,6 +1,9 @@
 <template>
   <div class="m-3">
     <main-nav-bar class="mb-6" :routes="routes" :searchProp="searchProp">
+      <template v-slot:iconOrText>
+        <h1 class="text-2xl">Users</h1>
+      </template>
     </main-nav-bar>
     <simple-with-actions
       :data="data"
