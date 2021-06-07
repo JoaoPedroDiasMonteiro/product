@@ -66,7 +66,7 @@
 import MasterLayout from "../../Components/Layouts/MasterLayout.vue";
 
 export default {
-  layout: (h, page) => h(MasterLayout, [page]),
+  layout: MasterLayout,
   components: { MasterLayout },
   props: {
     errors: Object
