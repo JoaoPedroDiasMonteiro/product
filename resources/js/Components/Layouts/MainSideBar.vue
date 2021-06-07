@@ -19,9 +19,9 @@
         <ul class="ml-0">
           <li>
             <inertia-link
-              :class="{ active: isRoute('admin.dashboard.index') }"
-              href="/"
-              class="flex flex-row px-4 py-4 mb-2 text-gray-100 border-gray-300 rounded-lg hover:text-black hover:bg-gray-300 hover:font-bold hover:cursor-pointer"
+              :class="{ active: isRoute('users.index') }"
+              :href="route('users.index')"
+              class="flex flex-row px-4 py-4 mb-2 text-gray-100 border-gray-300 rounded-lg hover:text-black hover:bg-white hover:font-bold hover:cursor-pointer"
             >
               <span>
                 <svg
@@ -31,19 +31,21 @@
                   fill="currentColor"
                 >
                   <path
-                    d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
                   />
                 </svg>
               </span>
-              <span class="ml-2">Dashboard</span>
+              <span class="ml-2">Users</span>
             </inertia-link>
           </li>
 
           <li>
             <inertia-link
-              :class="{ active: isRoute('admin.dashboard.products.') }"
-              href="route('admin.dashboard.products.index')"
-              class="flex flex-row px-4 py-4 mb-2 text-gray-100 border-gray-300 rounded-lg hover:text-black hover:bg-gray-300 hover:font-bold hover:cursor-pointer"
+              :class="{ active: isRoute('users.destroy') }"
+              :href="route('users.index')"
+              class="flex flex-row px-4 py-4 mb-2 text-gray-100 border-gray-300 rounded-lg hover:text-black hover:bg-white hover:font-bold hover:cursor-pointer"
             >
               <span>
                 <svg
@@ -57,7 +59,7 @@
                   />
                 </svg>
               </span>
-              <span class="ml-2">Produtos</span>
+              <span class="ml-2">Products</span>
             </inertia-link>
           </li>
         </ul>
@@ -80,6 +82,6 @@ export default {
 <style scoped>
 .active {
   color: rgba(0, 0, 0, var(--tw-text-opacity));
-  background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
+  background-color: white;
 }
 </style>
