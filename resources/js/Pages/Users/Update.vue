@@ -53,7 +53,7 @@ import BasicForm from "../../Components/Forms/BasicForm.vue";
 import MasterLayout from "../../Components/Layouts/MasterLayout.vue";
 
 export default {
-  layout: (h, page) => h(MasterLayout, [page]),
+  layout: MasterLayout,
   components: { BasicForm, MasterLayout },
   props: {
     errors: Object,
