@@ -25,7 +25,8 @@ class UserController extends Controller
         }
 
         return Inertia::render('Users/List', [
-            'data' => $users->paginate(15)->appends($request->all())
+            'data' => $users->paginate(15)->appends($request->all()),
+            'searchProp' => $request->search
         ]);
     }
 
