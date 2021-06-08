@@ -43,8 +43,8 @@
 
           <li>
             <inertia-link
-              :class="{ active: isRoute('users.destroy') }"
-              :href="route('users.index')"
+              :class="{ active: isRoute('products.') }"
+              :href="route('products.index')"
               class="flex flex-row px-4 py-4 mb-2 text-gray-100 border-gray-300 rounded-lg hover:text-black hover:bg-white hover:font-bold hover:cursor-pointer"
             >
               <span>
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style scoped>
-.active {
+.sactive {
   color: rgba(0, 0, 0, var(--tw-text-opacity));
   background-color: white;
 }
