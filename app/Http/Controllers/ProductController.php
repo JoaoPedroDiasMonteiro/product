@@ -117,6 +117,15 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product->delete();
+            DB::commit();
+            return redirect()->route('products.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('products.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 }
