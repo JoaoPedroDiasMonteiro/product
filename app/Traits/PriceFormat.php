@@ -10,6 +10,7 @@ trait PriceFormat
         if (empty($value)) {
             return 0;
         }
+        $value = preg_replace('/[^\d,\.]/', '', $value);
         return (float)str_replace(",", ".", str_replace(".", "", $value));
     }
 
@@ -18,7 +19,7 @@ trait PriceFormat
         if ($value <= 0) {
             return 'Não disponível';
         }
-        return number_format($value, 2, ',', '.');
+        return 'R$ ' . number_format($value, 2, ',', '.');
     }
 }
 
