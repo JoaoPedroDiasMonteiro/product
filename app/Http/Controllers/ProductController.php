@@ -82,7 +82,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('Products/ProductEdit', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -92,9 +94,19 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product->fill($request->validated());
+            $product->saveOrFail();
+            DB::commit();
+            return redirect()->route('products.index', ['search' => $product->name]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('products.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
