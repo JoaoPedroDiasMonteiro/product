@@ -20,7 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('document_secondary');
             $table->string('street');
             $table->string('number');
-            $table->string('complement');
+            $table->string('complement')->nullable();
             $table->string('zipcode');
             $table->string('neighborhood');
             $table->timestamps();
