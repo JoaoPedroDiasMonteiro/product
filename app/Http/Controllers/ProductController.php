@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -38,7 +40,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Products/ProductCreate');
     }
 
     /**
@@ -47,9 +49,18 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product = Product::query()->create($request->validated());
+            DB::commit();
+            return redirect()->route('products.index', ['search' => $product->name]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('products.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
