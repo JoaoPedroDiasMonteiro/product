@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      rows: ["id", "cost_price", "sell_price", "description"],
+      rows: ["id", "name", "cost_price", "sell_price", "description"],
       routes: {
         create: "products.create",
         search: "products.index"
