@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
+use App\Traits\StringFormat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
+    use StringFormat;
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +22,12 @@ class CustomerController extends Controller
         $customers = Customer::query();
 
         if ($search = $request->search) {
+            $onlyNumbersSearch = $this->onlyNumbers($search);
             $customers
                 ->orWhere('name', 'like', '%' . $search . '%')
-                ->orWhere('document', 'like', '%' . $search . '%')
+                ->orWhere('document', 'like', '%' . $onlyNumbersSearch . '%')
                 ->orWhere('street', 'like', '%' . $search . '%')
-                ->orWhere('zipcode', 'like', '%' . $search . '%')
+                ->orWhere('zipcode', 'like', '%' . $onlyNumbersSearch . '%')
                 ->orWhere('neighborhood', 'like', '%' . $search . '%');
         }
 
@@ -39,7 +44,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Customers/CustomerCreate');
     }
 
     /**
@@ -48,9 +53,18 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $customer = Customer::query()->create($request->validated());
+            DB::commit();
+            return redirect()->route('customers.index', ['search' => $customer->document]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
