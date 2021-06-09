@@ -5,6 +5,11 @@ namespace App\Traits;
 
 trait StringFormat
 {
+    private function onlyLettersNumbers($value)
+    {
+        return preg_replace('/[^A-Za-z0-9]/', '', $value);
+    }
+
     private function onlyNumbers($value)
     {
         return preg_replace('/\D/', '', $value);

@@ -22,12 +22,14 @@ class CustomerController extends Controller
         $customers = Customer::query();
 
         if ($search = $request->search) {
-            $onlyNumbersSearch = $this->onlyNumbers($search);
+            $cleanSearch = $this->onlyLettersNumbers($search);
             $customers
                 ->orWhere('name', 'like', '%' . $search . '%')
-                ->orWhere('document', 'like', '%' . $onlyNumbersSearch . '%')
+                ->when($cleanSearch, function($query) use($cleanSearch) {
+                    $query->orWhere('document', 'like', '%' . $cleanSearch . '%');
+                    $query->orWhere('zipcode', 'like', '%' . $cleanSearch . '%');
+                })
                 ->orWhere('street', 'like', '%' . $search . '%')
-                ->orWhere('zipcode', 'like', '%' . $onlyNumbersSearch . '%')
                 ->orWhere('neighborhood', 'like', '%' . $search . '%');
         }
 
