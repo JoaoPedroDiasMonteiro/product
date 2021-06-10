@@ -123,6 +123,15 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $customer->delete();
+            DB::commit();
+            return redirect()->route('customers.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 }
