@@ -88,7 +88,9 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return Inertia::render('Customers/CustomerEdit', [
+            'customer' => $customer
+        ]);
     }
 
     /**
@@ -98,9 +100,19 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(CustomerRequest $request, Customer $customer)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $customer = $customer->fill($request->validated());
+            $customer->saveOrFail();
+            DB::commit();
+            return redirect()->route('customers.index', ['search' => $customer->document]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
