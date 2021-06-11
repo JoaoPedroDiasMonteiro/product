@@ -18,7 +18,7 @@ class CreateSaleOrderItemsTable extends Migration
             $table->foreignId('sale_order_id')->references('id')->on('sale_orders');
             $table->foreignId('product_id')->references('id')->on('products');
             $table->integer('quantity');
-            $table->integer('unitary_value');
+            $table->float('unitary_value');
             $table->timestamps();
         });
     }
