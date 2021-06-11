@@ -22,4 +22,13 @@ class SaleOrder extends Model
     {
         return $this->hasMany(SaleOrderItem::class);
     }
+
+    public function scopeWithRelations($query)
+    {
+        return $query
+            ->with('products.product:id,name')
+            ->with('products:sale_order_id,product_id,quantity,unitary_value')
+            ->with('customer:id,name')
+            ->select('id', 'customer_id');
+    }
 }
