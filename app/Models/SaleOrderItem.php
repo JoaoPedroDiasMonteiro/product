@@ -33,6 +33,11 @@ class SaleOrderItem extends Model
 
     public function getTotalValueAttribute()
     {
-        return $this->toBrl($this->unitary_value * $this->quantity);
+        return $this->toBrl($this->attributes['unitary_value'] * $this->quantity);
+    }
+    
+    public function getUnitaryValueAttribute($value)
+    {
+        return $this->toBrl($value);
     }
 }
