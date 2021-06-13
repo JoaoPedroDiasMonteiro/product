@@ -14,7 +14,7 @@ class SaleOrder extends Model
         'customer_id'
     ];
 
-    // protected $appends = ['total'];
+    protected $appends = ['total'];
 
     public function customer()
     {

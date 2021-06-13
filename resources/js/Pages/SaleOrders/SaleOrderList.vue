@@ -6,7 +6,7 @@
       </template>
     </main-nav-bar>
     <sale-order-table
-      :data="data"
+      :data="data.data"
       :routes="routes2"
     ></sale-order-table>
     <pagination :paginate="data"></pagination>

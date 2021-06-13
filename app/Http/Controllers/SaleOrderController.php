@@ -21,22 +21,18 @@ class SaleOrderController extends Controller
     public function index(Request $request)
     {
         $saleOrders = SaleOrder::withRelations();
-        // $saleOrders = SaleOrder::query()->with('products');
-        // $a = $saleOrders->get()->toArray();
-        // $b = $saleOrders->get()->pluck('products')->toArray();
-        // $c = $saleOrders->get()->pluck('products')->collapse()->toArray();
 
+        // if ($search = $request->search) {
+        //     $saleOrders
+        //         ->orWhere('name', 'like', '%' . $search . '%');
+        // }
 
-        if ($search = $request->search) {
-            $saleOrders
-                ->orWhere('name', 'like', '%' . $search . '%')
-                ->orWhere('cost_price', 'like', '%' . $search . '%')
-                ->orWhere('sell_price', 'like', '%' . $search . '%')
-                ->orWhere('description', 'like', '%' . $search . '%');
-        }
-
+        // DB::enableQueryLog();
+        // $saleOrders->orderBy('id', 'ASC')->paginate(15)->appends($request->all())->toArray();
+        // dd(DB::getQueryLog());
+    
         return Inertia::render('SaleOrders/SaleOrderList', [
-            'data' => $saleOrders->paginate(15)->appends($request->all())->append('total')->toArray(),
+            'data' => $saleOrders->orderBy('id', 'ASC')->paginate(15)->appends($request->all())->toArray(),
             'searchProp' => $request->search
         ]);
     }
