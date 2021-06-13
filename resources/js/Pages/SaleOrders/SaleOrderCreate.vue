@@ -27,6 +27,14 @@
 
 
 <div v-for="product in productsCount" :key="product" class="mb-7">
+
+<div v-if="deletedProducts[product] !== true">
+
+  <div>
+    <svg @click="deleteProductItem(product)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto text-red-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </div>
   <sale-order-select :data="products.data" title="Select a Product" @selectedProduct='handleSelectProduct($event, product)'>
     <li class="relative p-2 text-gray-900 cursor-default select-none" id="listbox-option-0" role="option">
         <input
@@ -64,6 +72,7 @@
       v-model="data.products[product].sell_price"
       :class="{ 'border border-red-600': errors.sell_price }"
       class="w-full h-10 px-3 py-2 border rounded shadow-md focus:outline-none focus:border-yellow-500"/>
+</div>
 
 </div>
 
@@ -123,6 +132,7 @@ export default {
       searchProduct: '',
       timeout: null,
       productsCount: 1,
+      deletedProducts: {}
     };
   },
   methods: {
@@ -131,6 +141,10 @@ export default {
     },
     incrementProductsCount() {
       this.productsCount += 1
+    },
+    deleteProductItem(index) {
+      this.data.products[index] = null
+      this.deletedProducts[index] = true
     },
     handleSelectCustomer(item) {
       this.data.customer_id = item.id
