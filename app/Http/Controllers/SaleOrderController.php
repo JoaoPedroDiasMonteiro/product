@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaleOrderRequest;
+use App\Models\Customer;
+use App\Models\Product;
 use App\Models\SaleOrder;
+use App\Models\SaleOrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class SaleOrderController extends Controller
@@ -24,10 +29,10 @@ class SaleOrderController extends Controller
 
         if ($search = $request->search) {
             $saleOrders
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('cost_price', 'like', '%' . $search . '%')
-            ->orWhere('sell_price', 'like', '%' . $search . '%')
-            ->orWhere('description', 'like', '%' . $search . '%');
+                ->orWhere('name', 'like', '%' . $search . '%')
+                ->orWhere('cost_price', 'like', '%' . $search . '%')
+                ->orWhere('sell_price', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
         }
 
         return Inertia::render('SaleOrders/SaleOrderList', [
@@ -41,9 +46,23 @@ class SaleOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $customers = Customer::query();
+        $products = Product::query();
+
+        if ($request->customer) {
+            $customers->where('name', 'like', '%' . $request->customer . '%');
+        }
+
+        if ($request->product) {
+            $products->where('name', 'like', '%' . $request->product . '%');
+        }
+
+        return Inertia::render('SaleOrders/SaleOrderCreate', [
+            'customers' => $customers->paginate(1500)->appends($request->all()),
+            'products' => $products->paginate(1500)->appends($request->all()),
+        ]);
     }
 
     /**
@@ -52,9 +71,24 @@ class SaleOrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaleOrderRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $saleOrder = SaleOrder::query()->create($request->validated());
+
+            foreach ($request->products as $product) {
+                $product['sale_order_id'] = $saleOrder->id;
+                $a = SaleOrderItem::query()->create($product);
+            }
+
+            DB::commit();
+            return redirect()->route('sale-orders.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('sale-orders.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+        }
     }
 
     /**
