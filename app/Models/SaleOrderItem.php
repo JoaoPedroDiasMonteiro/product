@@ -14,7 +14,7 @@ class SaleOrderItem extends Model
         'sale_order_id',
         'product_id',
         'quantity',
-        'unitary_value',       
+        'unitary_value',
     ];
 
     protected $appends = [
@@ -31,11 +31,16 @@ class SaleOrderItem extends Model
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
+    public function setUnitaryValueAttribute($value)
+    {
+        $this->attributes['unitary_value'] = $this->toFloatNumber($value);
+    }
+
     public function getTotalValueAttribute()
     {
         return $this->toBrl($this->attributes['unitary_value'] * $this->quantity);
     }
-    
+
     public function getUnitaryValueAttribute($value)
     {
         return $this->toBrl($value);
