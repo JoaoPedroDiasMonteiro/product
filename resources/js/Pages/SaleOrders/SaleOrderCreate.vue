@@ -5,7 +5,7 @@
     title="ADD NEW SALE ORDER"
   >
 
-<sale-order-select :data="customers.data" title="Select a Customer" class="mb-7">
+<sale-order-select :data="customers.data" title="Select a Customer" class="mb-7" @selectedProduct="handleSelectCustomer">
   <li class="relative p-2 text-gray-900 cursor-default select-none" id="listbox-option-0" role="option">
       <input
         type="search"
@@ -132,8 +132,8 @@ export default {
     incrementProductsCount() {
       this.productsCount += 1
     },
-    selectCaller(value) {
-      this.handleSelectProduct()
+    handleSelectCustomer(item) {
+      this.data.customer_id = item.id
     },
     handleSelectProduct(item, count) {
       this.data.products[count] = {
