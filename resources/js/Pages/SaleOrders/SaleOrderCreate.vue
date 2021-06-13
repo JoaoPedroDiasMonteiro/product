@@ -49,7 +49,8 @@
       placeholder="Quantity"
       autocomplete="off"
       required
-      :ref="'quantity_' + product"
+      v-if="data.products[product]"
+      v-model="data.products[product].quantity"
       :class="{ 'border border-red-600': errors.name }"
       class="w-full h-10 px-3 py-2 border rounded shadow-md focus:outline-none focus:border-yellow-500"/>
       
@@ -59,7 +60,8 @@
       autocomplete="off"
       required
       v-money="money"
-      :ref="'sell_price_' + product"
+      v-if="data.products[product]"
+      v-model="data.products[product].sell_price"
       :class="{ 'border border-red-600': errors.sell_price }"
       class="w-full h-10 px-3 py-2 border rounded shadow-md focus:outline-none focus:border-yellow-500"/>
 
@@ -134,10 +136,14 @@ export default {
       this.handleSelectProduct()
     },
     handleSelectProduct(item, count) {
-      let ref = 'sell_price_' + count;
-      let ref2 = 'quantity_' + count;
-      this.$refs[ref].value = item.sell_price
-      this.$refs[ref2].value = 1
+      this.data.products[count] = {
+        product_id: item.id,
+        quantity: 1,
+        sell_price: item.sell_price,
+      }
+      setTimeout(() => {
+         this.data.products[count].sell_price = item.sell_price
+      }, 50);
     },
     handleSearch(param) {
       window.clearTimeout(this.timeout);
