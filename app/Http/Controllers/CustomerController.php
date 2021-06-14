@@ -65,7 +65,7 @@ class CustomerController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Fazer alguma coisa (email, slack, etc) com o erro $th
-            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+            return redirect()->route('customers.index')->withErrors(['error' => 'Oops! An unexpected error has occurred']);
         }
     }
 
@@ -111,7 +111,7 @@ class CustomerController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Fazer alguma coisa (email, slack, etc) com o erro $th
-            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+            return redirect()->route('customers.index')->withErrors(['error' => 'Oops! An unexpected error has occurred']);
         }
     }
 
@@ -131,7 +131,7 @@ class CustomerController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Fazer alguma coisa (email, slack, etc) com o erro $th
-            return redirect()->route('customers.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+            return redirect()->route('customers.index')->withErrors(['error' => 'Oops! An unexpected error has occurred']);
         }
     }
 }

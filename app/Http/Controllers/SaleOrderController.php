@@ -85,7 +85,7 @@ class SaleOrderController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Fazer alguma coisa (email, slack, etc) com o erro $th
-            return redirect()->route('sale-orders.index')->withErrors('error', 'Oops! An unexpected error has occurred');
+            return redirect()->route('sale-orders.index')->withErrors(['error' => 'Oops! An unexpected error has occurred']);
         }
     }
 
