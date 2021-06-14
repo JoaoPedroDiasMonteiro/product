@@ -39,6 +39,18 @@
         :class="{ 'border border-red-600': errors.password }"
         class="w-full h-10 px-3 py-2 mb-3 border rounded shadow-md focus:outline-none focus:border-yellow-500"
       />
+      <label for="" class="block w-full">
+          <span class="relative mr-2 leading-9" style="top:-3px">Is Admin?</span>
+          <input
+          type="checkbox"
+          name="is_admin"
+          placeholder="Is Admin?"
+          autocomplete="off"
+          v-model="data.is_admin"
+          :class="{ 'border border-red-600': errors.is_admin }"
+          class="w-5 h-5 border rounded shadow-md focus:outline-none focus:border-yellow-500"
+        />
+        </label>
       <button
         class="px-3 py-1 text-lg font-bold text-white bg-yellow-600 rounded shadow hover:bg-yellow-600 focus:outline-none"
       >
@@ -65,7 +77,8 @@ export default {
         name: this.user.name,
         email: this.user.email,
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
+        is_admin: this.user.is_admin
       }
     };
   },

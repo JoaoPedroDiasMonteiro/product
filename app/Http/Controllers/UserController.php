@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -50,7 +51,15 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $user = User::query()->create($request->validated());
+            $user = new User();
+            $user->fill($request->only(['name', 'email', 'password']));
+            if (Auth::user()->is_admin && $request->is_admin) {
+                $user->is_admin = $request->is_admin;
+            }
+            if (!Auth::user()->is_admin && $request->is_admin === true) {
+                return redirect()->back()->withErrors(['error' => 'Ooops! You need be an Administrator']);
+            }
+            $user->saveOrFail();
             DB::commit();
             return redirect()->route('users.index', ['search' => $user->email]);
         } catch (\Throwable $th) {
@@ -95,7 +104,13 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $user->fill($request->validated());
+            $user->fill($request->only(['name', 'email', 'password']));
+            if (Auth::user()->is_admin && $request->is_admin) {
+                $user->is_admin = $request->is_admin;
+            }
+            if (!Auth::user()->is_admin && $request->is_admin === true) {
+                return redirect()->back()->withErrors(['error' => 'Ooops! You need be an Administrator']);
+            }
             $user->saveOrFail();
             DB::commit();
             return redirect()->route('users.index', ['search' => $user->email]);

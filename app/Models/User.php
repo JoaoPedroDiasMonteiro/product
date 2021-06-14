@@ -42,6 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getIsAdminAttribute($value)
+    {
+        if ($value === 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function setPasswordAttribute($value)
     {
         if ($value) {

@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return redirect()->route('users.index');
-});
+})->name('admin.dashboard');
 
 Route::group(['middleware' => 'auth'], function () { 
     Route::resource('users', UserController::class);
