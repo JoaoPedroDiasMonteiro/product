@@ -15,8 +15,8 @@ class CreateSaleOrderItemsTable extends Migration
     {
         Schema::create('sale_order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_order_id')->references('id')->on('sale_orders');
-            $table->foreignId('product_id')->references('id')->on('products');
+            $table->foreignId('sale_order_id')->references('id')->on('sale_orders')->onDelete('cascade');
+            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity');
             $table->float('unitary_value');
             $table->timestamps();
