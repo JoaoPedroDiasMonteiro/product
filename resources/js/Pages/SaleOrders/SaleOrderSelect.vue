@@ -9,7 +9,7 @@
     <button  @click="toggleShow" type="button" class="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
       <span class="flex items-center">
         <span class="block ml-3 truncate">
-          {{selected}}
+          {{getName()}}
         </span>
       </span>
       <span class="absolute inset-y-0 right-0 flex items-center pr-2 ml-3 pointer-events-none">
@@ -51,6 +51,10 @@ export default {
     title: {
         type: String,
         default: 'Select'
+    },
+    name: {
+        type: String,
+        default: null
     }
   },
   data() {
@@ -63,6 +67,13 @@ export default {
   methods: {
     toggleShow: function() {
       this.shouldShow = !this.shouldShow;
+    },
+    getName: function() {
+      if (this.name !== null) {
+        return this.name
+      }
+
+      return this.selected
     },
     setSelected: function(item) {
       this.selected = item.name;
