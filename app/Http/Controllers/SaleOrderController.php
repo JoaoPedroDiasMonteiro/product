@@ -180,6 +180,16 @@ class SaleOrderController extends Controller
      */
     public function destroy(SaleOrder $saleOrder)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $saleOrder->delete();
+            DB::commit();
+            return redirect()->route('sale-orders.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            // Fazer alguma coisa (email, slack, etc) com o erro $th
+            return redirect()->route('sale-orders.index')->withErrors(['error' => 'Oops! An unexpected error has occurred']);
+        }
     }
 }
