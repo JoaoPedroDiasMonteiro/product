@@ -56,7 +56,7 @@ class UserController extends Controller
             if (Auth::user()->is_admin && $request->is_admin) {
                 $user->is_admin = $request->is_admin;
             }
-            if (!Auth::user()->is_admin && $request->is_admin === true) {
+            if (Auth::user()->is_admin !== true && $request->is_admin === true) {
                 return redirect()->back()->withErrors(['error' => 'Ooops! You need be an Administrator']);
             }
             $user->saveOrFail();
@@ -108,7 +108,7 @@ class UserController extends Controller
             if (Auth::user()->is_admin && $request->is_admin !== null) {
                 $user->is_admin = $request->is_admin;
             }
-            if (!Auth::user()->is_admin && $request->is_admin === true) {
+            if (Auth::user()->is_admin !== true && $request->is_admin === true) {
                 return redirect()->back()->withErrors(['error' => 'Ooops! You need be an Administrator']);
             }
             $user->saveOrFail();
