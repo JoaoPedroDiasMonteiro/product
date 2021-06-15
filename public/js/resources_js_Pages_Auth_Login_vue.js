@@ -41,8 +41,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      email: '',
-      password: ''
+      email: 'admin@admin.com',
+      password: '@Admin2020'
     };
   },
   methods: {
