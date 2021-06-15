@@ -105,7 +105,7 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $user->fill($request->only(['name', 'email', 'password']));
-            if (Auth::user()->is_admin && $request->is_admin) {
+            if (Auth::user()->is_admin && $request->is_admin !== null) {
                 $user->is_admin = $request->is_admin;
             }
             if (!Auth::user()->is_admin && $request->is_admin === true) {
