@@ -17,6 +17,11 @@ class Product extends Model
         'description'
     ];
 
+    public function saleOrderItems()
+    {
+        return $this->hasMany(SaleOrderItem::class);
+    }
+
     public function setCostPriceAttribute($value)
     {
         $this->attributes['cost_price'] = $this->toFloatNumber($value);

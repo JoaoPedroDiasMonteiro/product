@@ -119,6 +119,9 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
+            if ($product->saleOrderItems->count()) {
+                return redirect()->route('products.index')->withErrors(['error' => 'This Product has a Sale Order Associed']);
+            }
             $product->delete();
             DB::commit();
             return redirect()->route('products.index');
