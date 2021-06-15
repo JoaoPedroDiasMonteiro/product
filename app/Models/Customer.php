@@ -21,6 +21,11 @@ class Customer extends Model
         'neighborhood',
     ];
 
+    public function SaleOrders()
+    {
+        return $this->hasMany(SaleOrder::class);
+    }
+
     public function setDocumentAttribute($value)
     {
         $this->attributes['document'] = $this->onlyNumbers($value);

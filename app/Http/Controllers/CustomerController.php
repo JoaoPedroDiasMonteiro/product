@@ -125,6 +125,9 @@ class CustomerController extends Controller
     {
         try {
             DB::beginTransaction();
+            if ($customer->saleOrders->count()) {
+                return redirect()->route('customers.index')->withErrors(['error' => 'This Customer has a Sale Order Associed']);
+            }
             $customer->delete();
             DB::commit();
             return redirect()->route('customers.index');
