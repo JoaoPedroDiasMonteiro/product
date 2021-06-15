@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
-        Route::delete('sale-orders/{sale_order}', [SaleOrderController::class, 'index'])->name('sale-orders.destroy'); 
+        Route::delete('sale-orders/{sale_order}', [SaleOrderController::class, 'destroy'])->name('sale-orders.destroy'); 
     });
 });
 
