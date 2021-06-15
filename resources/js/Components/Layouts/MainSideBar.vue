@@ -6,9 +6,9 @@
       <!-- Profile Photo && Name -->
       <div class="flex flex-wrap mt-8">
         <div class="text-center" style="width: 100%">
-          <span class="block mb-3 font-semibold text-white">Ava Harper</span>
+          <span class="block mb-3 font-semibold text-white">{{user.name}}</span>
           <img
-            src="https://randomuser.me/api/portraits/women/21.jpg"
+            src="https://picsum.photos/200"
             class="w-40 h-40 mx-auto rounded-full"
           />
         </div>
@@ -122,6 +122,12 @@
 
 <script>
 export default {
+  props: {
+    user: {
+      default: {name: 'user', id: 1 },
+      type: Object
+    },
+  },
   methods: {
     isRoute: name => {
       const current = route().current();

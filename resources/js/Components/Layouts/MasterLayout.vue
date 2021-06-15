@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <main-side-bar></main-side-bar>
+    <main-side-bar :user="user"></main-side-bar>
 
     <div class="w-full h-screen overflow-y-scroll">
       <slot></slot>
@@ -16,7 +16,8 @@ import MainSideBar from './MainSideBar.vue';
 export default {
   components: { FloatingError, MainSideBar },
   props: {
-    errors: Object
+    errors: Object,
+    user: Object
   },
   methods: {
     isRoute: name => {
