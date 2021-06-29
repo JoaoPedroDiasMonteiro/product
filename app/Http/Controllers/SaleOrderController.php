@@ -22,17 +22,17 @@ class SaleOrderController extends Controller
      */
     public function index(Request $request)
     {
-        $saleOrders = SaleOrder::withRelations();
+        $saleOrders = SaleOrder::query()->withRelations();
 
-        // if ($search = $request->search) {
-        //     $saleOrders
-        //         ->orWhere('name', 'like', '%' . $search . '%');
-        // }
+        if ($search = $request->search) {
+            $saleOrders->orWhereHas('products', function ($q) use ($search) {
+                return $q->where('name', 'LIKE', '%' . $search . '%');
+            })
+                ->orWhereHas('customer', function ($q) use ($search) {
+                    return $q->where('name', 'LIKE', '%' . $search . '%');
+                });
+        }
 
-        // DB::enableQueryLog();
-        // $saleOrders->orderBy('id', 'ASC')->paginate(15)->appends($request->all())->toArray();
-        // dd(DB::getQueryLog());
-    
         return Inertia::render('SaleOrders/SaleOrderList', [
             'data' => $saleOrders->orderBy('id', 'ASC')->paginate(15)->appends($request->all())->toArray(),
             'searchProp' => $request->search
@@ -111,16 +111,16 @@ class SaleOrderController extends Controller
         $customers = Customer::query();
         $products = Product::query();
         $saleOrderId = $saleOrder->id;
-        
-        $SaleOrderProducts = DB::table('sale_order_items')
-        ->where('sale_order_id', $saleOrderId)
-        ->join('products', 'product_id', 'products.id')
-        // ->join('sale_orders', 'sale_order_id', 'sale_orders.id')
-        // ->join('customers', 'sale_orders.customer_id', 'customers.id')
-        ->select('sale_order_items.*', 'products.name')
-        ->get()->toArray();
 
-        foreach($SaleOrderProducts as $product) {
+        $SaleOrderProducts = DB::table('sale_order_items')
+            ->where('sale_order_id', $saleOrderId)
+            ->join('products', 'product_id', 'products.id')
+            // ->join('sale_orders', 'sale_order_id', 'sale_orders.id')
+            // ->join('customers', 'sale_orders.customer_id', 'customers.id')
+            ->select('sale_order_items.*', 'products.name')
+            ->get()->toArray();
+
+        foreach ($SaleOrderProducts as $product) {
             $product->unitary_value = $this->toBrl($product->unitary_value);
         }
 

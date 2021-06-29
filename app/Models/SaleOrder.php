@@ -26,10 +26,9 @@ class SaleOrder extends Model
         return $this->hasMany(SaleOrderItem::class);
     }
 
-    // Preciso arrumar isso depois
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class, 'sale_order_items', 'sale_order_items.sale_order_id', 'sale_order_items.product_id');
     }
 
     public function getTotalAttribute()
